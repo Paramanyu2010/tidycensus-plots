@@ -2,4 +2,33 @@
 title: "TexasIncome"
 format: html
 author: "Paramanyu Gupta"
+execute: 
+  echo: false
 ---
+
+```{r}
+#| message: false
+library(tidyverse)
+library(tidycensus)
+```
+
+```{r}
+income_tx <- get_acs(
+  geography = "county",
+  variables = "B19013_001",
+  state = "TX",
+  year = 2020,
+  geometry = TRUE
+)
+```
+
+```{r}
+ggplot(income_tx) +
+  geom_sf(aes(fill = estimate), color = "white", size = 0.2) +
+  scale_fill_viridis_c(option = "plasma", name = "Median Income") +
+  labs(
+    title = "Median Household Income by County, Texas (2020)",
+    caption = "Data source: ACS 5-year estimates"
+  ) +
+  theme_minimal()
+```
